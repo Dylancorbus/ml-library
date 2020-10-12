@@ -45,13 +45,23 @@ public class MatrixUtilsTest {
         double[] expected = new double[]{25, 50, 100};
         double[] actual = MatrixUtils.linearRegression(matrix2, vector2);
         assertEquals(Arrays.toString(expected), Arrays.toString(actual));
+        System.out.println(String.format("Expected: %s \nActual: %s", Arrays.toString(expected), Arrays.toString(actual)));
 
     }
 
     @Test
-    public void getVector() {
+    public void getColVector() {
         double[] expected = new double[]{2, 8, 3};
-        double[] actual = MatrixUtils.getVector(matrix1, 3);
+        double[] actual = MatrixUtils.getColVector(matrix1, 3);
         assertEquals(Arrays.toString(expected), Arrays.toString(actual));
+        System.out.println(String.format("Expected: %s \nActual: %s", Arrays.toString(expected), Arrays.toString(actual)));
+    }
+
+    @Test
+    public void getRowVector() {
+        double[] expected = new double[]{2, 3, 8, 5};
+        double[] actual = MatrixUtils.getRowVector(matrix1, 2);
+        assertEquals(Arrays.toString(expected), Arrays.toString(actual));
+        System.out.println(String.format("Expected: %s \nActual: %s", Arrays.toString(expected), Arrays.toString(actual)));
     }
 }

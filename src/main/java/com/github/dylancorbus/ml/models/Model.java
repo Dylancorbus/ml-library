@@ -1,10 +1,10 @@
-package com.github.dylancorbus.ml.algorithms.regression;
+package com.github.dylancorbus.ml.models;
 
 public interface Model {
 
 
     /**
-     * Runs the gradient descent algorithm and estimates the best representative
+     * Runs the algorithm and estimates the best representative
      * function for the data.
      * @param x
      * @param y

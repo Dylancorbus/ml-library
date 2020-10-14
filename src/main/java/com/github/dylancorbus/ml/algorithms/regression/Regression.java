@@ -1,5 +1,8 @@
 package com.github.dylancorbus.ml.algorithms.regression;
 
+import java.io.FileWriter;
+import java.io.IOException;
+
 public interface Regression {
 
 
@@ -19,4 +22,7 @@ public interface Regression {
      * @return - prediction
      */
     double[] predict(double[][] x);
+
+    void save(String pathName);
+    void load(String pathName);
 }

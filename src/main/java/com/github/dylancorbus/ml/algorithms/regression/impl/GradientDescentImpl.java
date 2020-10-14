@@ -4,6 +4,7 @@ import com.github.dylancorbus.ml.algorithms.regression.Regression;
 import com.github.dylancorbus.ml.utils.matrices.MatrixUtils;
 
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -28,6 +29,7 @@ public class GradientDescentImpl implements Regression {
      * @param matrix - matrix containing rows and columns. x values can go in columns 0-(n-1)
      *               y values must be in the last column n.
      */
+    @Override
     public double fit(final double[][] matrix) {
         theta = new double[matrix[0].length];
         double[][] x = MatrixUtils.getx(matrix);
@@ -85,9 +87,66 @@ public class GradientDescentImpl implements Regression {
      * @param x - x value
      * @return - prediction
      */
+    @Override
     public double[] predict(double[][] x) {
         double[][] X = MatrixUtils.getX(x);
         return MatrixUtils.mult(X, this.theta);
+    }
+
+    @Override
+    public void save(String pathName){
+        try {
+            FileWriter myWriter = new FileWriter(pathName);
+            myWriter.write(Arrays.toString(Arrays.toString(theta).replace("[", "").replace("]", "").getBytes()));
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+
+
+    @Override
+    public void load(String pathName){
+        FileInputStream inputStream = null;
+        Scanner sc = null;
+        double[][] matrix = new double[10][];
+        try {
+            inputStream = new FileInputStream("/Users/dylancorbus/Desktop/machine-learning-ex1/ex1/ex1data2.txt");
+            sc = new Scanner(inputStream, "UTF-8");
+            int i = 0;
+
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] rowStr = line.split(",");
+                double[] row = Arrays.stream(rowStr).mapToDouble(str -> Double.valueOf(str)).toArray();
+                matrix[i++] = row;
+                if(i >= matrix.length) {
+                    double[][] newMatrix = new double[matrix.length * 2][];
+                    System.arraycopy(matrix, 0, newMatrix, 0, matrix.length);
+                    matrix = newMatrix;
+                }
+
+            }
+            // note that Scanner suppresses exceptions
+            if (sc.ioException() != null) {
+                throw sc.ioException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (sc != null) {
+                sc.close();
+            }
+        }
     }
 
     public static void main(String[] args) {
@@ -114,6 +173,7 @@ public class GradientDescentImpl implements Regression {
         System.out.println(gd.fit(matrix1));
         System.out.println(Arrays.toString(gd.theta));
         System.out.println(Arrays.toString(gd.predict(new double[][]{new double[]{5.8598, 1}})));
+        gd.save("/Users/dylancorbus/Downloads/ml-library/model.txt");
 
 
 

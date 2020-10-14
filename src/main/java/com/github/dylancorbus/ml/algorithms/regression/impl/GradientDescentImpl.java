@@ -1,6 +1,6 @@
 package com.github.dylancorbus.ml.algorithms.regression.impl;
 
-import com.github.dylancorbus.ml.models.Model;
+import com.github.dylancorbus.ml.algorithms.regression.Regression;
 import com.github.dylancorbus.ml.utils.matrices.MatrixUtils;
 
 import java.io.FileInputStream;
@@ -10,7 +10,7 @@ import java.util.Scanner;
 import java.util.stream.IntStream;
 
 
-public class GradientDescentImpl implements Model {
+public class GradientDescentImpl implements Regression {
     private double alpha;
     private double[] theta;
     private int itrs = 100;

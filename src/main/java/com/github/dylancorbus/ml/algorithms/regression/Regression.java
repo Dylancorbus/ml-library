@@ -1,6 +1,6 @@
-package com.github.dylancorbus.ml.models;
+package com.github.dylancorbus.ml.algorithms.regression;
 
-public interface Model {
+public interface Regression {
 
 
     /**

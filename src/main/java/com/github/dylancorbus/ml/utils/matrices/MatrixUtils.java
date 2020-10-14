@@ -8,13 +8,15 @@ import java.util.stream.IntStream;
 public class MatrixUtils {
 
     public static double[][] eye(double[][] matrix) {
+        if(matrix.length != matrix[0].length) {
+            throw new NonConformantArgumentException(
+                    String
+                            .format("error: non-square matrix: argument dimensions (op1 is %dx%d)",
+                                    matrix.length, matrix[0].length));
+        }
         double[][] eye = new double[matrix.length][matrix[0].length];
-        IntStream.range(0,matrix.length).forEach(i -> push(eye, i));
+        IntStream.range(0,matrix.length).forEach(i -> eye[i][i] = 1);
         return eye;
-    }
-
-    private static void push(double[][] eye, int i) {
-        eye[i][i] = 1;
     }
 
 
@@ -168,7 +170,7 @@ public class MatrixUtils {
                 if(current > max) max = current;
                 if(current < min) min = current;
             }
-        return new double[]{max - min, avg/matrix[c].length};
+        return new double[]{max - min, avg/matrix.length};
     }
 
     public static double[] pow(double num, double[] vector) {

@@ -1,6 +1,6 @@
 # Simple ML-Library
 Simple machine learning library with multi language support. This is an ongoing project
-I will be adding to as I progress through the Coursera Machine Learning course taught by Andre Ng.
+I will be adding to as I progress through the Coursera Machine Learning course taught by Andrew Ng.
 
 
 ## Features:

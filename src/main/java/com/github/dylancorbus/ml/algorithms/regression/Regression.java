@@ -14,7 +14,7 @@ public interface Regression {
      *               y values must be in the last column n.
      * @return - value of the minimized j function
      */
-    double fit(double[][] x);
+    void fit(double[][] x);
 
     /**
      * Predicts the y value for x

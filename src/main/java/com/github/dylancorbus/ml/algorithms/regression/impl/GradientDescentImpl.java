@@ -14,9 +14,9 @@ import java.util.stream.IntStream;
 public class GradientDescentImpl implements Regression {
     private double alpha;
     private double[] theta;
-    private int itrs = 100;
+    private int itrs = 1000;
     private boolean isConverged = false;
-    private  double convergenceTh = 0.001;
+    private double convergenceTh = 0.0001;
 
     public GradientDescentImpl(double learnRate) {
         this.alpha = learnRate;
@@ -30,12 +30,11 @@ public class GradientDescentImpl implements Regression {
      *               y values must be in the last column n.
      */
     @Override
-    public double fit(final double[][] matrix) {
+    public void fit(final double[][] matrix) {
         theta = new double[matrix[0].length];
         double[][] x = MatrixUtils.getx(matrix);
         double[][] X = MatrixUtils.getX(x);
         double[] y = MatrixUtils.getColVector(matrix, matrix[0].length - 1);//get a vector containing the y column
-        System.out.println(String.format("MSE before descent: value: %.10f", meanSquaredError(X, y)));
         normalizeX(X);
         int i = 0;
         while (this.itrs > i++) {
@@ -48,10 +47,7 @@ public class GradientDescentImpl implements Regression {
             theta = MatrixUtils.sub(theta, MatrixUtils.mult((this.alpha / matrix.length), MatrixUtils.mult(MatrixUtils.transpose(X), std_err)));
             var mse_after = meanSquaredError(X, y);
             this.isConverged = (mse_before - mse_after) < this.convergenceTh;
-//            System.out.println(String.format("MSE: ITR #%d value: %.10f", i, mse_after));
         }
-        return meanSquaredError(X, y);
-
     }
 
     /**
@@ -94,7 +90,7 @@ public class GradientDescentImpl implements Regression {
     }
 
     @Override
-    public void save(String pathName){
+    public void save(String pathName) {
         try {
             FileWriter myWriter = new FileWriter(pathName);
             myWriter.write(Arrays.toString(Arrays.toString(theta).replace("[", "").replace("]", "").getBytes()));
@@ -108,7 +104,7 @@ public class GradientDescentImpl implements Regression {
 
 
     @Override
-    public void load(String pathName){
+    public void load(String pathName) {
         FileInputStream inputStream = null;
         Scanner sc = null;
         double[][] matrix = new double[10][];
@@ -122,7 +118,7 @@ public class GradientDescentImpl implements Regression {
                 String[] rowStr = line.split(",");
                 double[] row = Arrays.stream(rowStr).mapToDouble(str -> Double.valueOf(str)).toArray();
                 matrix[i++] = row;
-                if(i >= matrix.length) {
+                if (i >= matrix.length) {
                     double[][] newMatrix = new double[matrix.length * 2][];
                     System.arraycopy(matrix, 0, newMatrix, 0, matrix.length);
                     matrix = newMatrix;
@@ -151,10 +147,10 @@ public class GradientDescentImpl implements Regression {
 
     public static void main(String[] args) {
         double[][] matrix1 = new double[4][2];
-        double[] a = new double[]{6.1101,7,17.592};
-        double[] b = new double[]{5.5277,2,9.1302};
-        double[] c = new double[]{8.5186,5,13.662};
-        double[] d = new double[]{7.0032,4,11.854};
+        double[] a = new double[]{6.1101, 7, 17.592};
+        double[] b = new double[]{5.5277, 2, 9.1302};
+        double[] c = new double[]{8.5186, 5, 13.662};
+        double[] d = new double[]{7.0032, 4, 11.854};
         matrix1[0] = a;
         matrix1[1] = b;
         matrix1[2] = c;
@@ -170,11 +166,10 @@ public class GradientDescentImpl implements Regression {
         }
 //
         GradientDescentImpl gd = new GradientDescentImpl(0.001);
-        System.out.println(gd.fit(matrix1));
+        gd.fit(matrix1);
         System.out.println(Arrays.toString(gd.theta));
-        System.out.println(Arrays.toString(gd.predict(new double[][]{new double[]{5.8598, 1}})));
+        System.out.println(Arrays.toString(gd.predict(new double[][]{new double[]{5.8598, 7}})));
         gd.save("/Users/dylancorbus/Downloads/ml-library/model.txt");
-
 
 
         FileInputStream inputStream = null;
@@ -190,7 +185,7 @@ public class GradientDescentImpl implements Regression {
                 String[] rowStr = line.split(",");
                 double[] row = Arrays.stream(rowStr).mapToDouble(str -> Double.valueOf(str)).toArray();
                 matrix[i++] = row;
-                if(i >= matrix.length) {
+                if (i >= matrix.length) {
                     double[][] newMatrix = new double[matrix.length * 2][];
                     System.arraycopy(matrix, 0, newMatrix, 0, matrix.length);
                     matrix = newMatrix;
@@ -220,10 +215,10 @@ public class GradientDescentImpl implements Regression {
         }
 
         gd = new GradientDescentImpl(0.001);
-        System.out.println(gd.fit(matrix));
+        gd.fit(matrix);
 //        1203,3,239500
         System.out.println(Arrays.toString(gd.theta));
-        System.out.println(Arrays.toString(gd.predict(new double[][]{new double[]{1203,3}})));
+        System.out.println(Arrays.toString(gd.predict(new double[][]{new double[]{1203, 3}})));
     }
 
 }
